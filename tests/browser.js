@@ -1,3 +1,4 @@
+successfully downloaded text file (SHA: a387f8a8bef8f8860a8d07f522ccfa58a6b6d188)
 import assert from 'node:assert/strict';
 import { spawn } from 'node:child_process';
 import { mkdtemp, readFile, rm } from 'node:fs/promises';
@@ -360,7 +361,7 @@ try {
   await click('[data-size="5"]');
   await swipe('horizontal');
   await reload();
-  assert.equal(await state()).size, 5);
+  assert.equal((await state()).size, 5);
   assert.equal(await evaluate("document.querySelectorAll('#board .image-tile').length"), 24);
   console.log('PASS difficulty and 5 × 5 picture game persist');
 
