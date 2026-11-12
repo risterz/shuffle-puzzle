@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600">
+  <defs><linearGradient id="sea" x2="0" y2="1"><stop stop-color="#6cc8cb"/><stop offset="1" stop-color="#318fa6"/></linearGradient></defs>
+  <rect width="600" height="600" fill="#b9e2df"/>
+  <circle cx="125" cy="135" r="68" fill="#ffe4a0"/>
+  <path d="M0 270q150-30 300 0t300 0v330H0Z" fill="url(#sea)"/>
+  <path d="M0 410q140-55 270 10t330-20v200H0Z" fill="#f4d6a0"/>
+  <path d="M0 384q145-40 280 20t320-18" fill="none" stroke="#f8f2dc" stroke-width="18"/>
+  <path d="M420 382V155" stroke="#775944" stroke-width="20" stroke-linecap="round"/>
+  <path d="M423 166q-105-25-139 57 80 5 139-57Zm4 0q98-48 145 25-72 30-145-25Zm0 5q-44-102-108-83 9 73 108 83Zm3-1q25-95 87-90-3 70-87 90Z" fill="#397c69"/>
+  <path d="m432 185 77 203" stroke="#775944" stroke-width="16" stroke-linecap="round"/>
+  <path d="m488 398 70 27-117 49-71-28Z" fill="#e68e79"/>
+  <path d="m480 402 42 15-63 26-43-16Z" fill="#fff2d6"/>
+  <g fill="#fff" opacity=".7"><path d="M231 114q17-19 34 0 17-19 34 0-34-10-68 0Z"/><path d="M328 76q13-15 26 0 13-15 26 0-26-8-52 0Z"/></g>
+</svg>
