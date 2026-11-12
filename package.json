@@ -1,0 +1,16 @@
+{
+  "name": "shuffle-puzzle",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "npm run build && npx wrangler dev",
+    "dev": "npm run build && npx wrangler dev",
+    "start:static": "python -m http.server 3000",
+    "build": "node build.js",
+    "deploy": "npm run build && npx --yes wrangler@latest deploy",
+    "test": "node --test tests/game.test.js tests/validation.test.js",
+    "test:browser": "node tests/browser.js",
+    "db:migrate": "wrangler d1 migrations apply DB --remote"
+  }
+}
