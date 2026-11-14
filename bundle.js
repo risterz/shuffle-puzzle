@@ -88,6 +88,10 @@ const imageCaption = document.querySelector('#image-caption');
 const tiles = new Map();
 const leaderboardDialog = document.querySelector('#leaderboard-dialog');
 const scoreForm = document.querySelector('#score-form');
+const usernameForm = document.querySelector('#username-form');
+const playerNameInput = document.querySelector('#player-name');
+const leaderboardNameInput = document.querySelector('#leaderboard-name');
+const usernameStatus = usernameForm.querySelector('.form-status');
 const themeButton = document.querySelector('#theme-button');
 const themeColor = document.querySelector('meta[name="theme-color"]');
 const colorScheme = window.matchMedia('(prefers-color-scheme: dark)');
@@ -265,6 +269,24 @@ async function loadLeaderboard() {
       leaderboardDialog.setAttribute('aria-busy', 'false');
       document.querySelector('#refresh-leaderboard').disabled = false;
     }
+  }
+}
+
+function readPlayerName() {
+  try {
+    return localStorage.getItem('shuffle-player-name') || '';
+  } catch {
+    return '';
+  }
+}
+
+function savePlayerName(name) {
+  playerNameInput.value = name;
+  leaderboardNameInput.value = name;
+  try {
+    localStorage.setItem('shuffle-player-name', name);
+  } catch {
+    // The nickname remains available for this session without browser storage.
   }
 }
 
@@ -682,6 +704,8 @@ document.querySelector('#play-again-button').addEventListener('click', newGame);
 document.querySelector('#leaderboard-button').addEventListener('click', () => {
   document.querySelector('#leaderboard-size').value = String(size);
   document.querySelector('#leaderboard-mode').value = pictureMode ? 'picture' : 'number';
+  leaderboardNameInput.value = readPlayerName();
+  usernameStatus.textContent = 'Used when you submit a completed online puzzle.';
   leaderboardDialog.showModal();
   void loadLeaderboard();
 });
@@ -689,11 +713,23 @@ document.querySelector('[data-close-leaderboard]').addEventListener('click', () 
 document.querySelector('#refresh-leaderboard').addEventListener('click', loadLeaderboard);
 document.querySelector('#leaderboard-size').addEventListener('change', loadLeaderboard);
 document.querySelector('#leaderboard-mode').addEventListener('change', loadLeaderboard);
-try {
-  document.querySelector('#player-name').value = localStorage.getItem('shuffle-player-name') || '';
-} catch {
-  // A saved nickname is optional.
-}
+const savedPlayerName = readPlayerName();
+playerNameInput.value = savedPlayerName;
+leaderboardNameInput.value = savedPlayerName;
+usernameForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+  const name = leaderboardNameInput.value.trim().replace(/\s+/g, ' ');
+  if (!name || [...name].length > 20 || /[\p{Cc}\p{Cf}]/u.test(name)) {
+    usernameStatus.textContent = 'Use a nickname between 1 and 20 characters.';
+    leaderboardNameInput.setCustomValidity('Use a nickname between 1 and 20 characters.');
+    leaderboardNameInput.reportValidity();
+    return;
+  }
+  leaderboardNameInput.setCustomValidity('');
+  savePlayerName(name);
+  usernameStatus.textContent = `Saved as ${name}. Complete an online puzzle to post your score.`;
+});
+leaderboardNameInput.addEventListener('input', () => leaderboardNameInput.setCustomValidity(''));
 scoreForm.addEventListener('submit', async (event) => {
   event.preventDefault();
   if (!rankedGame || !finished || scoreSubmitting || latestScoreSubmitted) return;
@@ -703,7 +739,8 @@ scoreForm.addEventListener('submit', async (event) => {
   button.disabled = true;
   status.textContent = 'Checking your puzzle…';
   try {
-    const name = document.querySelector('#player-name').value.trim();
+    const name = playerNameInput.value.trim();
+    playerNameInput.setCustomValidity('');
     const result = await apiRequest('/api/scores', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -712,11 +749,7 @@ scoreForm.addEventListener('submit', async (event) => {
     latestScoreSubmitted = true;
     scoreForm.hidden = true;
     document.querySelector('#unranked-note').hidden = true;
-    try {
-      localStorage.setItem('shuffle-player-name', result.score.name);
-    } catch {
-      // Submission still works if local storage is unavailable.
-    }
+    savePlayerName(result.score.name);
     announcer.textContent = `Score submitted. You are number ${result.rank} on this leaderboard.`;
     document.querySelector('#leaderboard-size').value = String(size);
     document.querySelector('#leaderboard-mode').value = pictureMode ? 'picture' : 'number';

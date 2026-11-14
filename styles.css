@@ -182,6 +182,9 @@ footer { max-width: 1240px; margin: 0 auto; padding: 23px 40px 28px; border-top:
 .name-entry .primary-button:disabled { cursor: wait; opacity: .65; }
 .modal .form-status { min-height: 0; margin: 8px 0 0; color: var(--purple-dark); font-size: 11px; line-height: 1.45; }
 .modal .form-status:empty { display: none; }
+.username-form { margin: 0 0 20px; padding: 15px; border-radius: 12px; background: var(--purple-pale); }
+.username-form > label { display: block; margin-bottom: 8px; color: var(--purple-dark); font-size: 11px; font-weight: 700; }
+.modal .username-form .form-status { margin-top: 9px; }
 .modal .unranked-note { padding: 12px 14px; border-radius: 10px; background: #f5f3f8; font-size: 11px; line-height: 1.5; }
 .leaderboard-modal { width: min(570px, calc(100% - 32px)); }
 .leaderboard-modal .leaderboard-description { margin: 9px 0 22px; font-size: 12px; }

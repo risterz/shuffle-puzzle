@@ -173,6 +173,11 @@
       <span class="modal-eyebrow">A LITTLE FRIENDLY COMPETITION</span>
       <h2 id="leaderboard-title">Top puzzlers</h2>
       <p class="leaderboard-description">Fastest time wins. Fewer moves break a tie.</p>
+      <form id="username-form" class="username-form">
+        <label for="leaderboard-name">Your leaderboard nickname</label>
+        <div class="name-entry"><input id="leaderboard-name" name="name" type="text" maxlength="20" autocomplete="nickname" required placeholder="Puzzle master" /><button class="primary-button" type="submit">Save name</button></div>
+        <p class="form-status">Used when you submit a completed online puzzle.</p>
+      </form>
       <div class="leaderboard-filters">
         <label>Difficulty<select id="leaderboard-size"><option value="3">Easy · 3 × 3</option><option value="4">Medium · 4 × 4</option><option value="5">Hard · 5 × 5</option></select></label>
         <label>Puzzle<select id="leaderboard-mode"><option value="number">Numbers</option><option value="picture">Pictures</option></select></label>

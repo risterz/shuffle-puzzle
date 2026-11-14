@@ -7,6 +7,7 @@ import { tmpdir } from 'node:os';
 import { extname, join } from 'node:path';
 import { createSolvedBoard, isSolved, moveTile, shuffleBoard } from '../game.js';
 
+
 const apiGames = new Map();
 const apiScores = [];
 const root = new URL('../', import.meta.url);
@@ -418,12 +419,21 @@ try {
   await click('#play-again-button');
   await call('Emulation.setEmulatedMedia', { features: [] });
 
+  await click('#leaderboard-button');
+  await evaluate("document.querySelector('#leaderboard-name').value = '  Risterz   Player  '; document.querySelector('#username-form').requestSubmit()");
+  assert.equal(await evaluate("localStorage.getItem('shuffle-player-name')"), 'Risterz Player');
+  assert.equal(await evaluate("document.querySelector('#username-form .form-status').textContent"), 'Saved as Risterz Player. Complete an online puzzle to post your score.');
+  await reload();
+  await until("document.querySelector('#leaderboard-name').value === 'Risterz Player' && document.querySelector('#player-name').value === 'Risterz Player'", 'saved nickname restored');
+  console.log('PASS leaderboard nickname saves, normalizes, and persists across reload');
+
   await evaluate('window.__rankedFixture = true');
   await click('#numbers-mode');
   await until("JSON.parse(localStorage.getItem('shuffle-ranked-game-v1'))?.initialBoard.join(',') === '1,2,3,4,5,6,7,0,8'", 'ranked game issued');
   await click('.tile[data-value="8"]');
   await until("document.querySelector('#win-dialog').open", 'ranked win');
   assert.equal(await evaluate("document.querySelector('#score-form').hidden"), false);
+  assert.equal(await evaluate("document.querySelector('#player-name').value"), 'Risterz Player');
   await evaluate("document.querySelector('#player-name').value = 'Risterz'");
   await evaluate("document.querySelector('#score-form').requestSubmit()");
   await until("document.querySelector('#leaderboard-dialog').open && document.querySelector('#leaderboard-rows').children.length === 1", 'score submission and leaderboard');
