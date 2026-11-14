@@ -2,6 +2,10 @@
 
 A responsive sliding-puzzle game built with vanilla HTML, CSS, and JavaScript. Play offline in a browser or connect to the Cloudflare Worker and D1 leaderboard for ranked games.
 
+**[Play Shuffle live](https://shuffle-puzzle.harisharraz02.workers.dev/)**
+
+![Shuffle sliding-puzzle game](assets/shuffle-preview.png)
+
 ## Features
 
 - Solvable 3 × 3, 4 × 4, and 5 × 5 puzzles
@@ -11,6 +15,7 @@ A responsive sliding-puzzle game built with vanilla HTML, CSS, and JavaScript. P
 - Timer, move counter, and locally saved best scores
 - Automatic game saves that restore the board, picture, moves, and elapsed time
 - Validated saved games with a safe fallback when browser storage is unavailable
+- Light and dark themes, with saved preference and system-theme support
 - Accessible dialogs, visible focus states, and reduced-motion support
 - No runtime dependencies; source modules are bundled for direct-file play
 

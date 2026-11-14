@@ -16,6 +16,9 @@ const imageCaption = document.querySelector('#image-caption');
 const tiles = new Map();
 const leaderboardDialog = document.querySelector('#leaderboard-dialog');
 const scoreForm = document.querySelector('#score-form');
+const themeButton = document.querySelector('#theme-button');
+const themeColor = document.querySelector('meta[name="theme-color"]');
+const colorScheme = window.matchMedia('(prefers-color-scheme: dark)');
 const saveKey = 'shuffle-current-game-v1';
 const rankedSaveKey = 'shuffle-ranked-game-v1';
 
@@ -39,6 +42,35 @@ let leaderboardRequestId = 0;
 let scoreSubmitting = false;
 let latestScoreSubmitted = false;
 let boardRevision = 0;
+
+function applyTheme(theme, persist = false) {
+  document.documentElement.dataset.theme = theme;
+  const nextTheme = theme === 'dark' ? 'light' : 'dark';
+  const label = `Switch to ${nextTheme} theme`;
+  themeButton.setAttribute('aria-label', label);
+  themeButton.title = label;
+  themeColor.content = theme === 'dark' ? '#15141c' : '#f7f6f2';
+  if (persist) {
+    try {
+      localStorage.setItem('shuffle-theme', theme);
+    } catch {
+      // Theme switching still works when browser storage is unavailable.
+    }
+  }
+}
+
+applyTheme(document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light');
+themeButton.addEventListener('click', () => {
+  applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark', true);
+});
+colorScheme.addEventListener('change', (event) => {
+  try {
+    if (localStorage.getItem('shuffle-theme')) return;
+  } catch {
+    // Follow the system theme when browser storage is unavailable.
+  }
+  applyTheme(event.matches ? 'dark' : 'light');
+});
 
 function removeRankedGame() {
   rankedGame = null;

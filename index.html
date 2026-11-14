@@ -6,6 +6,16 @@
     <meta name="theme-color" content="#f7f6f2" />
     <meta name="description" content="A tiny daily dose of puzzle joy. Play a beautifully simple sliding puzzle in your browser." />
     <title>Shuffle — A little puzzle break</title>
+    <script>
+      try {
+        const savedTheme = localStorage.getItem('shuffle-theme');
+        document.documentElement.dataset.theme = ['light', 'dark'].includes(savedTheme)
+          ? savedTheme
+          : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      } catch {
+        document.documentElement.dataset.theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet" />
@@ -19,6 +29,10 @@
       </a>
       <div class="header-right">
         <span class="header-note">A little break for your brain</span>
+        <button class="icon-button theme-button" id="theme-button" type="button" aria-label="Switch to dark theme" title="Switch to dark theme">
+          <svg class="theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42m0-14.14-1.42 1.42m-11.3 11.3-1.42 1.42"/></svg>
+          <svg class="theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5 8.5 8.5 0 1 0 20.5 14.2Z"/></svg>
+        </button>
         <button class="text-button" id="leaderboard-button">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4Z"/><path d="M7 6H4v2a4 4 0 0 0 4 4M17 6h3v2a4 4 0 0 1-4 4"/></svg>
           Leaderboard
